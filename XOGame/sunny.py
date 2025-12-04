@@ -70,3 +70,30 @@ finish = False
 
 if check_winner(table, player):
     finish = True
+
+
+finish = False
+
+
+
+
+for r in range(1, 4): 
+    if table[r][0] == table[r][1] == table[r][2] != " ":
+        print(f"Player {player} wins!")
+        finish = True
+        break
+ 
+if not finish:
+    for c in range(3):  
+        if table[1][c] == table[2][c] == table[3][c] != " ":
+            print(f"Player {player} wins!")
+            finish = True
+            break
+
+if not finish:
+    if table[1][0] == table[2][1] == table[3][2] != " ":
+        print(f"Player {player} wins!")
+        finish = True
+    elif table[1][2] == table[2][1] == table[3][0] != " ":
+        print(f"Player {player} wins!")
+        finish = True
