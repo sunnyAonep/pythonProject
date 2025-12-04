@@ -56,23 +56,31 @@ def make_move(table, row, col, player):
 
 while finish == False:
     player= 'X'
+    counter = 0
 
-    for i in range(9):
-        if i % 2 == 0:
-            player = 'O'
-        else:
-            player = 'X'
-        print(f"{table[1]}\n{table[2]}\n{table[3]}")
-        player_choice = int(input(f"{player}, choose your block (1-9): "))
-        if 1 <= player_choice <= 3:
-            table[1][player_choice-1] = player
-        elif 4 <= player_choice <= 6:
-            table[2][player_choice-4] = player
-        else:
-            table[3][player_choice-7] = player
-        if check_winner(table, player):
-            finish = True
-            break
+    while counter != 9:
+        try:
+            if counter % 2 == 0:
+                player = 'O'
+            else:
+                player = 'X'
+            print(f"{table[1]}\n{table[2]}\n{table[3]}")
+            player_choice = int(input(f"{player}, choose your block (1-9): "))
+            counter += 1
+            if 1 <= player_choice <= 3:
+                table[1][player_choice-1] = player
+            elif 4 <= player_choice <= 6:
+                table[2][player_choice-4] = player
+            else:
+                table[3][player_choice-7] = player
+            if check_winner(table, player):
+                finish = True
+                print(f"{table[1]}\n{table[2]}\n{table[3]}")
+                break
+        except Exception as e:
+            print("Please enter a number between 1 - 9: ")
+            counter -= 1
+            continue
 
 
     if finish == False: 
