@@ -55,22 +55,26 @@ def make_move(table, row, col, player):
 #main game loop:
 
 while finish == False:
-    player1_symbol = 'X'
-    player2_symbol = 'O'
+    player= 'X'
 
     for i in range(9):
-        print(f"{table[1]}\n{table[2]}\n{table[3]}")
-        player_choice = int(input("First player, choose your block (1-9): "))
-        if 1 <= player_choice <= 3:
-            table[1][player_choice-1] = player1_symbol
-        elif 4 <= player_choice <= 6:
-            table[2][player_choice-4] = player1_symbol
+        if i % 2 == 0:
+            player = 'O'
         else:
-            table[3][player_choice-7] = player1_symbol
-        if check_winner(table, player1_symbol):
+            player = 'X'
+        print(f"{table[1]}\n{table[2]}\n{table[3]}")
+        player_choice = int(input(f"{player}, choose your block (1-9): "))
+        if 1 <= player_choice <= 3:
+            table[1][player_choice-1] = player
+        elif 4 <= player_choice <= 6:
+            table[2][player_choice-4] = player
+        else:
+            table[3][player_choice-7] = player
+        if check_winner(table, player):
             finish = True
             break
 
 
     if finish == False: 
         print("Draw")
+    break
