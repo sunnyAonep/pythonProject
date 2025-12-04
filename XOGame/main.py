@@ -69,22 +69,30 @@ while counter < 9 and finish == False:
             print("You already chose this spot last turn, choose another.")
             continue
         last_choice = player_choice
-        counter += 1
+
+        # determine row/col
         if 1 <= player_choice <= 3:
-            table[1][player_choice-1] = player
+            row, col = 1, player_choice - 1
         elif 4 <= player_choice <= 6:
-            table[2][player_choice-4] = player
+            row, col = 2, player_choice - 4
         else:
-            table[3][player_choice-7] = player
+            row, col = 3, player_choice - 7
+
+        if table[row][col] == "X" or table[row][col] == "O":
+            print("This spot is already taken, choose another.")
+            continue 
+
+        counter += 1 
+        table[row][col] = player
 
         if check_winner(table, player):
             finish = True
             print(f"{table[1]}\n{table[2]}\n{table[3]}")
             break
 
-    except Exception as e:
+    except Exception:
         print("Please enter a number between 1 - 9: ")
         continue
-    
+
 if finish == False: 
     print("Draw")
