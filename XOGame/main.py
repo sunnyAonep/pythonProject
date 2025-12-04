@@ -27,20 +27,6 @@ def check_winner(table, player):
         print(f"Player {player} wins!")
         return True
     return False
-
-def identify_X_or_O(xo):
-   if(xo=='X' or xo=='O'):
-        return True
-   else:
-       return False
-
-def who_starts_first(player1, player2):
-    if(player1=='X' and player2=='O'):
-        return player1
-    elif(player1=='O' and player2=='X'):
-        return player2
-    else:
-        return None
     
 def is_valid_move(table, row, col):
     if row in table and 0 <= col < len(table[row]):
@@ -48,41 +34,51 @@ def is_valid_move(table, row, col):
             return True
     else:
         return False
-    
-def make_move(table, row, col, player):
-    table[row][col] = player
+
+def avoid_same_move(choice, last_choice):
+    if choice == last_choice:
+        return True
+    else:
+        return False
+
+def choice_Player(player):
+    if player == 'X':
+        return 'X'
+    else:
+        return 'O'
 
 #main game loop:
 
-while finish == False:
-    player= 'X'
-    counter = 0
-
-    while counter != 9:
-        try:
-            if counter % 2 == 0:
-                player = 'O'
-            else:
-                player = 'X'
-            print(f"{table[1]}\n{table[2]}\n{table[3]}")
-            player_choice = int(input(f"{player}, choose your block (1-9): "))
-            counter += 1
-            if 1 <= player_choice <= 3:
-                table[1][player_choice-1] = player
-            elif 4 <= player_choice <= 6:
-                table[2][player_choice-4] = player
-            else:
-                table[3][player_choice-7] = player
-            if check_winner(table, player):
-                finish = True
-                print(f"{table[1]}\n{table[2]}\n{table[3]}")
-                break
-        except Exception as e:
-            print("Please enter a number between 1 - 9: ")
-            counter -= 1
+player= 'X'
+counter = 0
+for i in range(9):
+    try:
+        if counter % 2 == 0:
+            player = 'O'
+        else:
+            player = 'X'
+        print(f"{table[1]}\n{table[2]}\n{table[3]}")
+        last_choice = 0
+        print(last_choice)
+        player_choice = int(input(f"{player}, choose your block (1-9): "))
+        if avoid_same_move(choice=player_choice, last_choice=last_choice) == True:
             continue
-
-
-    if finish == False: 
-        print("Draw")
-    break
+        last_choice = player_choice
+        counter += 1
+        if 1 <= player_choice <= 3:
+            table[1][player_choice-1] = player
+        elif 4 <= player_choice <= 6:
+            table[2][player_choice-4] = player
+        else:
+            table[3][player_choice-7] = player
+        if check_winner(table, player):
+            finish = True
+            print(f"{table[1]}\n{table[2]}\n{table[3]}")
+            break
+    except Exception as e:
+        print("Please enter a number between 1 - 9: ")
+        counter -= 1
+        continue
+    
+if finish == False: 
+    print("Draw")
