@@ -61,9 +61,9 @@ def check_winner(table, player):
 
     return False
 
-table = {1: [" ", " ", " "],
-         2: [" ", " ", " "],
-         3: [" ", " ", " "]}
+table = {1: ["_", "_", "_"],
+         2: ["_", "_", "_"],
+         3: ["_", "_", "_"]}
 
 player = "X"
 finish = False
