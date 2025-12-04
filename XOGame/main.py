@@ -36,6 +36,7 @@ def is_valid_move(table, row, col):
         return False
 
 def avoid_same_move(choice, last_choice):
+    print(f"Choice: {choice}, Last Choice: {last_choice}")
     if choice == last_choice:
         return True
     else:
@@ -51,17 +52,21 @@ def choice_Player(player):
 
 player= 'X'
 counter = 0
-for i in range(9):
+last_choice = None 
+while counter < 9 and finish == False:
     try:
         if counter % 2 == 0:
             player = 'O'
         else:
             player = 'X'
+
         print(f"{table[1]}\n{table[2]}\n{table[3]}")
-        last_choice = 0
-        print(last_choice)
+        print("Last choice:", last_choice)
+
         player_choice = int(input(f"{player}, choose your block (1-9): "))
-        if avoid_same_move(choice=player_choice, last_choice=last_choice) == True:
+
+        if avoid_same_move(choice=player_choice, last_choice=last_choice):
+            print("You already chose this spot last turn, choose another.")
             continue
         last_choice = player_choice
         counter += 1
@@ -71,13 +76,14 @@ for i in range(9):
             table[2][player_choice-4] = player
         else:
             table[3][player_choice-7] = player
+
         if check_winner(table, player):
             finish = True
             print(f"{table[1]}\n{table[2]}\n{table[3]}")
             break
+
     except Exception as e:
         print("Please enter a number between 1 - 9: ")
-        counter -= 1
         continue
     
 if finish == False: 
