@@ -31,8 +31,7 @@ def is_valid_move(table, row, col):
     if row in table and 0 <= col < len(table[row]):
         if table[row][col] == " ":
             return True
-    else:
-        return False
+    return False
 
 def avoid_same_move(choice, last_choice):
     print(f"Choice: {choice}, Last Choice: {last_choice}")
@@ -47,33 +46,29 @@ def choice_Player(player):
     else:
         return 'O'
 
-def random_choice(last_choice):
+def random_choice(last_choice, table):
     can_get_out = False
-    while can_get_out == False:
-        player = 'O'
+    player = 'O'
+    while not can_get_out:
         pc_choice = random.randint(1,9)
-        if avoid_same_move(choice=pc_choice, last_choice=last_choice):
-            print("You already chose this spot last turn, choose another.")
-            continue
-        last_choice = player_choice
-        if 1 <= player_choice <= 3:
-            row, col = 1, player_choice - 1
-        elif 4 <= player_choice <= 6:
-            row, col = 2, player_choice - 4
+        
+        if 1 <= pc_choice <= 3:
+            row, col = 1, pc_choice - 1
+        elif 4 <= pc_choice <= 6:
+            row, col = 2, pc_choice - 4
         else:
-            row, col = 3, player_choice - 7
-        if table[row][col] == "X" or table[row][col] == "O":
-            print("This spot is already taken, choose another.")
-            continue 
-        can_get_out = True
-        table[row][col] = player
-        if check_winner(table, player):
-            finish = True
-            print(f"{table[1]}\n{table[2]}\n{table[3]}")
-            break
+            row, col = 3, pc_choice - 7
+
+        if is_valid_move(table, row, col):
+            print(f"The pc choose {pc_choice}")
+            table[row][col] = player
+            can_get_out = True
+            return pc_choice
+        
+    return None
     
 #main game loop:
-table = {1: [1,2,3], 2: [4,5,6], 3: [7,8,9]}
+table = {1: [" ", " ", " "], 2: [" ", " ", " "], 3: [" ", " ", " "]}
 finish = False
 player = 'X'
 counter = 0
@@ -81,17 +76,12 @@ last_choice = None
 play_pc = input("Do you want to play versus the pc (y,n): ")
 if play_pc.lower() == 'y':
     print("you play with the pc")
-    while counter < 9 and finish == False:
+    while counter < 9 and not finish:
         try:
             print(f"{table[1]}\n{table[2]}\n{table[3]}")
             print("Last choice:", last_choice)
 
             player_choice = int(input(f"{player}, choose your block (1-9): "))
-
-            if avoid_same_move(choice=player_choice, last_choice=last_choice):
-                print("You already chose this spot last turn, choose another.")
-                continue
-            last_choice = player_choice
 
             if 1 <= player_choice <= 3:
                 row, col = 1, player_choice - 1
@@ -100,10 +90,15 @@ if play_pc.lower() == 'y':
             else:
                 row, col = 3, player_choice - 7
 
-            if table[row][col] == "X" or table[row][col] == "O":
+            if not is_valid_move(table, row, col):
                 print("This spot is already taken, choose another.")
                 continue 
 
+            if avoid_same_move(choice=player_choice, last_choice=last_choice):
+                print("You already chose this spot last turn, choose another.")
+                continue
+
+            last_choice = player_choice
             counter += 1 
             table[row][col] = player
 
@@ -112,32 +107,39 @@ if play_pc.lower() == 'y':
                 print(f"{table[1]}\n{table[2]}\n{table[3]}")
                 break
 
-            random_choice(last_choice)
+            if counter < 9:
+                pc_last_choice = random_choice(last_choice, table) 
+                
+                if pc_last_choice is not None:
+                    last_choice = pc_last_choice
+                    counter += 1
+                
+                    if check_winner(table, 'O'):
+                        finish = True
+                        break
 
-        except Exception:
+        except ValueError:
             print("Please enter a number between 1 - 9: ")
             continue
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+            continue
 
-    if finish == False: 
+    if not finish:
         print("Draw")
 else:
-    while counter < 9 and finish == False:
+    while counter < 9 and not finish:
         try:
             if counter % 2 == 0:
-                player = 'O'
-            else:
                 player = 'X'
+            else:
+                player = 'O'
 
             print(f"{table[1]}\n{table[2]}\n{table[3]}")
             print("Last choice:", last_choice)
 
             player_choice = int(input(f"{player}, choose your block (1-9): "))
-
-            if avoid_same_move(choice=player_choice, last_choice=last_choice):
-                print("You already chose this spot last turn, choose another.")
-                continue
-            last_choice = player_choice
-
+            
             if 1 <= player_choice <= 3:
                 row, col = 1, player_choice - 1
             elif 4 <= player_choice <= 6:
@@ -145,10 +147,15 @@ else:
             else:
                 row, col = 3, player_choice - 7
 
-            if table[row][col] == "X" or table[row][col] == "O":
+            if not is_valid_move(table, row, col):
                 print("This spot is already taken, choose another.")
                 continue 
 
+            if avoid_same_move(choice=player_choice, last_choice=last_choice):
+                print("You already chose this spot last turn, choose another.")
+                continue
+
+            last_choice = player_choice
             counter += 1 
             table[row][col] = player
 
@@ -157,9 +164,9 @@ else:
                 print(f"{table[1]}\n{table[2]}\n{table[3]}")
                 break
 
-        except Exception:
+        except ValueError:
             print("Please enter a number between 1 - 9: ")
             continue
 
-    if finish == False: 
+    if not finish: 
         print("Draw")
