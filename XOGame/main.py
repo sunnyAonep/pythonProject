@@ -1,5 +1,4 @@
-table = {1: [1,2,3], 2: [4,5,6], 3: [7,8,9]}
-finish = False
+import random
 
 def check_row(table):
     for r in range(1, 4):
@@ -48,50 +47,119 @@ def choice_Player(player):
     else:
         return 'O'
 
-#main game loop:
-
-player= 'X'
-counter = 0
-last_choice = None 
-while counter < 9 and finish == False:
-    try:
-        if counter % 2 == 0:
-            player = 'O'
-        else:
-            player = 'X'
-
-        print(f"{table[1]}\n{table[2]}\n{table[3]}")
-        print("Last choice:", last_choice)
-
-        player_choice = int(input(f"{player}, choose your block (1-9): "))
-
-        if avoid_same_move(choice=player_choice, last_choice=last_choice):
+def random_choice(last_choice):
+    can_get_out = False
+    while can_get_out == False:
+        player = 'O'
+        pc_choice = random.randint(1,9)
+        if avoid_same_move(choice=pc_choice, last_choice=last_choice):
             print("You already chose this spot last turn, choose another.")
             continue
         last_choice = player_choice
-
         if 1 <= player_choice <= 3:
             row, col = 1, player_choice - 1
         elif 4 <= player_choice <= 6:
             row, col = 2, player_choice - 4
         else:
             row, col = 3, player_choice - 7
-
         if table[row][col] == "X" or table[row][col] == "O":
             print("This spot is already taken, choose another.")
             continue 
-
-        counter += 1 
+        can_get_out = True
         table[row][col] = player
-
         if check_winner(table, player):
             finish = True
             print(f"{table[1]}\n{table[2]}\n{table[3]}")
             break
+    
+#main game loop:
+table = {1: [1,2,3], 2: [4,5,6], 3: [7,8,9]}
+finish = False
+player = 'X'
+counter = 0
+last_choice = None
+play_pc = input("Do you want to play versus the pc (y,n): ")
+if play_pc.lower() == 'y':
+    print("you play with the pc")
+    while counter < 9 and finish == False:
+        try:
+            print(f"{table[1]}\n{table[2]}\n{table[3]}")
+            print("Last choice:", last_choice)
 
-    except Exception:
-        print("Please enter a number between 1 - 9: ")
-        continue
+            player_choice = int(input(f"{player}, choose your block (1-9): "))
 
-if finish == False: 
-    print("Draw")
+            if avoid_same_move(choice=player_choice, last_choice=last_choice):
+                print("You already chose this spot last turn, choose another.")
+                continue
+            last_choice = player_choice
+
+            if 1 <= player_choice <= 3:
+                row, col = 1, player_choice - 1
+            elif 4 <= player_choice <= 6:
+                row, col = 2, player_choice - 4
+            else:
+                row, col = 3, player_choice - 7
+
+            if table[row][col] == "X" or table[row][col] == "O":
+                print("This spot is already taken, choose another.")
+                continue 
+
+            counter += 1 
+            table[row][col] = player
+
+            if check_winner(table, player):
+                finish = True
+                print(f"{table[1]}\n{table[2]}\n{table[3]}")
+                break
+
+            random_choice(last_choice)
+
+        except Exception:
+            print("Please enter a number between 1 - 9: ")
+            continue
+
+    if finish == False: 
+        print("Draw")
+else:
+    while counter < 9 and finish == False:
+        try:
+            if counter % 2 == 0:
+                player = 'O'
+            else:
+                player = 'X'
+
+            print(f"{table[1]}\n{table[2]}\n{table[3]}")
+            print("Last choice:", last_choice)
+
+            player_choice = int(input(f"{player}, choose your block (1-9): "))
+
+            if avoid_same_move(choice=player_choice, last_choice=last_choice):
+                print("You already chose this spot last turn, choose another.")
+                continue
+            last_choice = player_choice
+
+            if 1 <= player_choice <= 3:
+                row, col = 1, player_choice - 1
+            elif 4 <= player_choice <= 6:
+                row, col = 2, player_choice - 4
+            else:
+                row, col = 3, player_choice - 7
+
+            if table[row][col] == "X" or table[row][col] == "O":
+                print("This spot is already taken, choose another.")
+                continue 
+
+            counter += 1 
+            table[row][col] = player
+
+            if check_winner(table, player):
+                finish = True
+                print(f"{table[1]}\n{table[2]}\n{table[3]}")
+                break
+
+        except Exception:
+            print("Please enter a number between 1 - 9: ")
+            continue
+
+    if finish == False: 
+        print("Draw")
