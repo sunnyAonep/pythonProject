@@ -75,7 +75,9 @@ counter = 0
 last_choice = None
 play_pc = input("Do you want to play versus the pc (y,n): ")
 if play_pc.lower() == 'y':
-    print("you play with the pc")
+    print("You play against the PC\nThis is how to choose a spot:")
+    table_look = {1: [1,2,3], 2: [4,5,6], 3: [7,8,9]}
+    print(f"{table_look[1]}\n{table_look[2]}\n{table_look[3]}")
     while counter < 9 and not finish:
         try:
             print(f"{table[1]}\n{table[2]}\n{table[3]}")
@@ -128,6 +130,9 @@ if play_pc.lower() == 'y':
     if not finish:
         print("Draw")
 else:
+    print("You play against another player\nThis is how to choose a spot:")
+    table_look = {1: [1,2,3], 2: [4,5,6], 3: [7,8,9]}
+    print(f"{table_look[1]}\n{table_look[2]}\n{table_look[3]}")
     while counter < 9 and not finish:
         try:
             if counter % 2 == 0:
