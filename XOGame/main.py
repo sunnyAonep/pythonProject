@@ -2,22 +2,22 @@ import random
 
 def check_row(table):
     for r in range(1, 4):
-        if table[r][0] == table[r][1] == table[r][2] != " ":
+        if table[r][0] == table[r][1] == table[r][2] != "___":
             return True
     return False
 
 
 def check_col(table):
     for c in range(3):
-        if table[1][c] == table[2][c] == table[3][c] != " ":
+        if table[1][c] == table[2][c] == table[3][c] != "___":
             return True
     return False
 
 
 def check_dig(table):
-    if table[1][0] == table[2][1] == table[3][2] != " ":
+    if table[1][0] == table[2][1] == table[3][2] != "___":
         return True
-    if table[1][2] == table[2][1] == table[3][0] != " ":
+    if table[1][2] == table[2][1] == table[3][0] != "___":
         return True
     return False
 
@@ -29,7 +29,7 @@ def check_winner(table, player):
     
 def is_valid_move(table, row, col):
     if row in table and 0 <= col < len(table[row]):
-        if table[row][col] == " ":
+        if table[row][col] == "___":
             return True
     return False
 
@@ -41,14 +41,14 @@ def avoid_same_move(choice, last_choice):
         return False
 
 def choice_Player(player):
-    if player == 'X':
-        return 'X'
+    if player == ' X ':
+        return ' X '
     else:
-        return 'O'
+        return ' O '
 
 def random_choice(last_choice, table):
     can_get_out = False
-    player = 'O'
+    player = ' O '
     while not can_get_out:
         pc_choice = random.randint(1,9)
         
@@ -68,16 +68,16 @@ def random_choice(last_choice, table):
     return None
     
 #main game loop:
-table = {1: [" ", " ", " "], 2: [" ", " ", " "], 3: [" ", " ", " "]}
+table = {1: ["___", "___", "___"], 2: ["___", "___", "___"], 3: ["___", "___", "___"]}
 finish = False
-player = 'X'
+player = ' X '
 counter = 0
 last_choice = None
 play_pc = input("Do you want to play versus the pc (y,n): ")
 if play_pc.lower() == 'y':
     print("You play against the PC\nThis is how to choose a spot:")
     table_look = {1: [1,2,3], 2: [4,5,6], 3: [7,8,9]}
-    print(f"{table_look[1]}\n{table_look[2]}\n{table_look[3]}")
+    print(f"{table_look[1]}\n\n{table_look[2]}\n\n{table_look[3]}")
     while counter < 9 and not finish:
         try:
             print(f"{table[1]}\n{table[2]}\n{table[3]}")
@@ -132,13 +132,13 @@ if play_pc.lower() == 'y':
 else:
     print("You play against another player\nThis is how to choose a spot:")
     table_look = {1: [1,2,3], 2: [4,5,6], 3: [7,8,9]}
-    print(f"{table_look[1]}\n{table_look[2]}\n{table_look[3]}")
+    print(f"{table_look[1]}\n\n{table_look[2]}\n\n{table_look[3]}")
     while counter < 9 and not finish:
         try:
             if counter % 2 == 0:
-                player = 'X'
+                player = ' X '
             else:
-                player = 'O'
+                player = ' O '
 
             print(f"{table[1]}\n{table[2]}\n{table[3]}")
             print("Last choice:", last_choice)
